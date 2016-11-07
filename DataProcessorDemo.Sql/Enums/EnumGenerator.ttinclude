@@ -1,0 +1,69 @@
+<#@ template debug="true" hostSpecific="true" #>
+<#@ output extension=".generated.cs" #>
+<#@ Assembly Name="EnvDTE.dll" #>
+<#@ Assembly Name="System.Core" #>
+<#@ Assembly Name="System.Data" #>
+<#@ Assembly Name="System.Data.Entity" #>
+<#@ Assembly Name="System.Configuration" #>
+<#@ import namespace="System.Configuration" #>
+<#@ import namespace="EnvDTE" #>
+<#@ import namespace="System.Data" #>
+<#@ import namespace="System.Data.EntityClient" #>
+<#@ import namespace="System.Data.SqlClient" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#
+    string tableName = Path.GetFileNameWithoutExtension(Host.TemplateFile);
+    string path = Path.GetDirectoryName(Host.TemplateFile);
+    string columnId = tableName + "Id";
+    string columnName = "Name";
+
+	string rootProjectPath = Host.ResolveAssemblyReference("$(ProjectDir)");
+	var config = System.Configuration.ConfigurationManager.OpenMappedExeConfiguration(new ExeConfigurationFileMap { ExeConfigFilename = rootProjectPath + @"\App.config" }, ConfigurationUserLevel.None);
+    ConnectionStringsSection conStrSection = config.ConnectionStrings as ConnectionStringsSection;
+	string entityConnectionString = conStrSection.ConnectionStrings[0].ConnectionString;
+	string connectionString = new EntityConnectionStringBuilder(entityConnectionString).ProviderConnectionString;
+ 
+    // Get containing project
+    IServiceProvider serviceProvider = (IServiceProvider)Host;
+    DTE dte = (DTE)serviceProvider.GetService(typeof(DTE));
+    Project project = dte.Solution.FindProjectItem(Host.TemplateFile).ContainingProject;
+#>
+using System;
+using System.CodeDom.Compiler;
+ 
+namespace <#= project.Properties.Item("DefaultNamespace").Value #><#= Path.GetDirectoryName(Host.TemplateFile).Remove(0, Path.GetDirectoryName(project.FileName).Length).Replace("\\", ".") #>
+{
+    /// <summary>
+    /// <#= tableName #> auto generated enumeration
+    /// </summary>
+    [GeneratedCode("TextTemplatingFileGenerator", "10")]
+    public enum <#= tableName #>
+    {
+<#
+    SqlConnection conn = new SqlConnection(connectionString);
+    string command = string.Format("select {0}, {1} from {2} order by {0}", columnId, columnName, tableName);
+    SqlCommand comm = new SqlCommand(command, conn);
+ 
+    conn.Open();
+ 
+    SqlDataReader reader = comm.ExecuteReader();
+    bool loop = reader.Read();
+ 
+    while(loop)
+    {
+#>      /// <summary>
+        /// Currency code: <#= reader[columnName] #>
+        /// </summary>
+        <#= Pascalize(reader[columnName]) #> = <#= reader[columnId] #><# loop = reader.Read(); #><#= loop ? ",\r\n" : string.Empty #>
+<#
+    }
+#>  }
+}
+<#+
+    private string Pascalize(object value)
+    {
+        Regex rx = new Regex(@"(?:[^a-zA-Z0-9]*)(?<first>[a-zA-Z0-9])(?<reminder>[a-zA-Z0-9]*)(?:[^a-zA-Z0-9]*)");
+        return rx.Replace(value.ToString(), m => m.Groups["first"].ToString().ToUpper() + m.Groups["reminder"].ToString().ToLower());
+    }
+#>

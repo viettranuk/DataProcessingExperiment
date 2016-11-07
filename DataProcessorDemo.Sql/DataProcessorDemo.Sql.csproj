@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{07B6C221-B571-4845-90C8-F1B0996E316F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DataProcessorDemo.Sql</RootNamespace>
+    <AssemblyName>DataProcessorDemo.Sql</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Entities\TaxDetail.cs" />
+    <Compile Include="Entities\UnprocessedDetail.cs" />
+    <Compile Include="Entities\UploadedFile.cs" />
+    <Compile Include="Enums\CurrencyHelpers.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\GenericRepository.cs" />
+    <Compile Include="Repositories\TaxDetailRepository.cs" />
+    <Compile Include="Repositories\UnprocessedDetailRepository.cs" />
+    <Compile Include="Repositories\UploadedFileContentRepository.cs" />
+    <Compile Include="Repositories\UploadedFileRepository.cs" />
+    <Compile Include="Enums\CurrencyCode.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CurrencyCode.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TaxDetail.cs">
+      <DependentUpon>TaxModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TaxModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TaxModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TaxModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TaxModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TaxModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TaxModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="UnprocessedDetail.cs">
+      <DependentUpon>TaxModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UploadedFile.cs">
+      <DependentUpon>TaxModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UploadedFilesContent.cs">
+      <DependentUpon>TaxModel.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+    <EntityDeploy Include="TaxModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>TaxModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Enums\EnumGenerator.ttinclude" />
+    <None Include="TaxModel.edmx.diagram">
+      <DependentUpon>TaxModel.edmx</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Enums\CurrencyCode.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CurrencyCode.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="TaxModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TaxModel.edmx</DependentUpon>
+      <LastGenOutput>TaxModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="TaxModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TaxModel.edmx</DependentUpon>
+      <LastGenOutput>TaxModel.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataProcessorDemo.Models\DataProcessorDemo.Models.csproj">
+      <Project>{79b3c67c-7a90-4c8f-a0bc-a41f3cd2f688}</Project>
+      <Name>DataProcessorDemo.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataProcessorDemo.Services\DataProcessorDemo.Services.csproj">
+      <Project>{2c571c28-c9fe-4030-ac03-55638b365164}</Project>
+      <Name>DataProcessorDemo.Services</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

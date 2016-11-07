@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="b3cb2f257c2f4f3caa6424bc7ced950f" Name="Diagram1" DisplayType="true">
+        <EntityTypeShape EntityType="TaxModel.TaxDetail" Width="1.5" PointX="3" PointY="6.125" />
+        <EntityTypeShape EntityType="TaxModel.UnprocessedDetail" Width="1.5" PointX="3" PointY="1.125" />
+        <EntityTypeShape EntityType="TaxModel.UploadedFile" Width="1.5" PointX="0.75" PointY="3.375" />
+        <EntityTypeShape EntityType="TaxModel.UploadedFilesContent" Width="1.5" PointX="3" PointY="3.75" />
+        <AssociationConnector Association="TaxModel.FK_TaxDetails_UploadedFiles" />
+        <AssociationConnector Association="TaxModel.FK_UnprocessedDetails_UploadedFiles" />
+        <AssociationConnector Association="TaxModel.FK_UploadedFilesContent_UploadedFiles" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

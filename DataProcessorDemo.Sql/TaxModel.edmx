@@ -1,0 +1,278 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TaxModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="TaxDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FileId" Type="int" Nullable="false" />
+          <Property Name="Account" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CurrencyCodeId" Type="int" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UnprocessedDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FileId" Type="int" Nullable="false" />
+          <Property Name="LineData" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UploadedFiles">
+          <Key>
+            <PropertyRef Name="FileId" />
+          </Key>
+          <Property Name="FileId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="260" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Size" Type="bigint" Nullable="false" />
+          <Property Name="ImportedOn" Type="datetime" Nullable="false" />
+          <Property Name="ProcessedLineCount" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UploadedFilesContent">
+          <Key>
+            <PropertyRef Name="FileId" />
+          </Key>
+          <Property Name="FileId" Type="int" Nullable="false" />
+          <Property Name="Data" Type="varbinary(max)" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_TaxDetails_UploadedFiles">
+          <End Role="UploadedFiles" Type="Self.UploadedFiles" Multiplicity="1" />
+          <End Role="TaxDetails" Type="Self.TaxDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UploadedFiles">
+              <PropertyRef Name="FileId" />
+            </Principal>
+            <Dependent Role="TaxDetails">
+              <PropertyRef Name="FileId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UnprocessedDetails_UploadedFiles">
+          <End Role="UploadedFiles" Type="Self.UploadedFiles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UnprocessedDetails" Type="Self.UnprocessedDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UploadedFiles">
+              <PropertyRef Name="FileId" />
+            </Principal>
+            <Dependent Role="UnprocessedDetails">
+              <PropertyRef Name="FileId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UploadedFilesContent_UploadedFiles">
+          <End Role="UploadedFiles" Type="Self.UploadedFiles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UploadedFilesContent" Type="Self.UploadedFilesContent" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="UploadedFiles">
+              <PropertyRef Name="FileId" />
+            </Principal>
+            <Dependent Role="UploadedFilesContent">
+              <PropertyRef Name="FileId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TaxModelStoreContainer">
+          <EntitySet Name="TaxDetails" EntityType="Self.TaxDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UnprocessedDetails" EntityType="Self.UnprocessedDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UploadedFiles" EntityType="Self.UploadedFiles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UploadedFilesContent" EntityType="Self.UploadedFilesContent" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_TaxDetails_UploadedFiles" Association="Self.FK_TaxDetails_UploadedFiles">
+            <End Role="UploadedFiles" EntitySet="UploadedFiles" />
+            <End Role="TaxDetails" EntitySet="TaxDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UnprocessedDetails_UploadedFiles" Association="Self.FK_UnprocessedDetails_UploadedFiles">
+            <End Role="UploadedFiles" EntitySet="UploadedFiles" />
+            <End Role="UnprocessedDetails" EntitySet="UnprocessedDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UploadedFilesContent_UploadedFiles" Association="Self.FK_UploadedFilesContent_UploadedFiles">
+            <End Role="UploadedFiles" EntitySet="UploadedFiles" />
+            <End Role="UploadedFilesContent" EntitySet="UploadedFilesContent" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TaxModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="TaxEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="TaxDetails" EntityType="TaxModel.TaxDetail" />
+          <EntitySet Name="UnprocessedDetails" EntityType="TaxModel.UnprocessedDetail" />
+          <EntitySet Name="UploadedFiles" EntityType="TaxModel.UploadedFile" />
+          <EntitySet Name="UploadedFilesContents" EntityType="TaxModel.UploadedFilesContent" />
+          <AssociationSet Name="FK_TaxDetails_UploadedFiles" Association="TaxModel.FK_TaxDetails_UploadedFiles">
+            <End Role="UploadedFile" EntitySet="UploadedFiles" />
+            <End Role="TaxDetail" EntitySet="TaxDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UnprocessedDetails_UploadedFiles" Association="TaxModel.FK_UnprocessedDetails_UploadedFiles">
+            <End Role="UploadedFile" EntitySet="UploadedFiles" />
+            <End Role="UnprocessedDetail" EntitySet="UnprocessedDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UploadedFilesContent_UploadedFiles" Association="TaxModel.FK_UploadedFilesContent_UploadedFiles">
+            <End Role="UploadedFile" EntitySet="UploadedFiles" />
+            <End Role="UploadedFilesContent" EntitySet="UploadedFilesContents" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="TaxDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FileId" Type="Int32" Nullable="false" />
+          <Property Name="Account" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CurrencyCodeId" Type="Int32" Nullable="false" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <NavigationProperty Name="UploadedFile" Relationship="TaxModel.FK_TaxDetails_UploadedFiles" FromRole="TaxDetail" ToRole="UploadedFile" />
+        </EntityType>
+        <EntityType Name="UnprocessedDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FileId" Type="Int32" Nullable="false" />
+          <Property Name="LineData" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="UploadedFile" Relationship="TaxModel.FK_UnprocessedDetails_UploadedFiles" FromRole="UnprocessedDetail" ToRole="UploadedFile" />
+        </EntityType>
+        <EntityType Name="UploadedFile">
+          <Key>
+            <PropertyRef Name="FileId" />
+          </Key>
+          <Property Name="FileId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="260" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Size" Type="Int64" Nullable="false" />
+          <Property Name="ImportedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ProcessedLineCount" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="TaxDetails" Relationship="TaxModel.FK_TaxDetails_UploadedFiles" FromRole="UploadedFile" ToRole="TaxDetail" />
+          <NavigationProperty Name="UnprocessedDetails" Relationship="TaxModel.FK_UnprocessedDetails_UploadedFiles" FromRole="UploadedFile" ToRole="UnprocessedDetail" />
+          <NavigationProperty Name="UploadedFilesContent" Relationship="TaxModel.FK_UploadedFilesContent_UploadedFiles" FromRole="UploadedFile" ToRole="UploadedFilesContent" />
+        </EntityType>
+        <EntityType Name="UploadedFilesContent">
+          <Key>
+            <PropertyRef Name="FileId" />
+          </Key>
+          <Property Name="FileId" Type="Int32" Nullable="false" />
+          <Property Name="Data" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="UploadedFile" Relationship="TaxModel.FK_UploadedFilesContent_UploadedFiles" FromRole="UploadedFilesContent" ToRole="UploadedFile" />
+        </EntityType>
+        <Association Name="FK_TaxDetails_UploadedFiles">
+          <End Type="TaxModel.UploadedFile" Role="UploadedFile" Multiplicity="1" />
+          <End Type="TaxModel.TaxDetail" Role="TaxDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UploadedFile">
+              <PropertyRef Name="FileId" />
+            </Principal>
+            <Dependent Role="TaxDetail">
+              <PropertyRef Name="FileId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UnprocessedDetails_UploadedFiles">
+          <End Type="TaxModel.UploadedFile" Role="UploadedFile" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="TaxModel.UnprocessedDetail" Role="UnprocessedDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UploadedFile">
+              <PropertyRef Name="FileId" />
+            </Principal>
+            <Dependent Role="UnprocessedDetail">
+              <PropertyRef Name="FileId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UploadedFilesContent_UploadedFiles">
+          <End Type="TaxModel.UploadedFile" Role="UploadedFile" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="TaxModel.UploadedFilesContent" Role="UploadedFilesContent" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="UploadedFile">
+              <PropertyRef Name="FileId" />
+            </Principal>
+            <Dependent Role="UploadedFilesContent">
+              <PropertyRef Name="FileId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TaxModelStoreContainer" CdmEntityContainer="TaxEntities">
+          <EntitySetMapping Name="TaxDetails">
+            <EntityTypeMapping TypeName="TaxModel.TaxDetail">
+              <MappingFragment StoreEntitySet="TaxDetails">
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="CurrencyCodeId" ColumnName="CurrencyCodeId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Account" ColumnName="Account" />
+                <ScalarProperty Name="FileId" ColumnName="FileId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UnprocessedDetails">
+            <EntityTypeMapping TypeName="TaxModel.UnprocessedDetail">
+              <MappingFragment StoreEntitySet="UnprocessedDetails">
+                <ScalarProperty Name="LineData" ColumnName="LineData" />
+                <ScalarProperty Name="FileId" ColumnName="FileId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UploadedFiles">
+            <EntityTypeMapping TypeName="TaxModel.UploadedFile">
+              <MappingFragment StoreEntitySet="UploadedFiles">
+                <ScalarProperty Name="ProcessedLineCount" ColumnName="ProcessedLineCount" />
+                <ScalarProperty Name="ImportedOn" ColumnName="ImportedOn" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="FileId" ColumnName="FileId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UploadedFilesContents">
+            <EntityTypeMapping TypeName="TaxModel.UploadedFilesContent">
+              <MappingFragment StoreEntitySet="UploadedFilesContent">
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="FileId" ColumnName="FileId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

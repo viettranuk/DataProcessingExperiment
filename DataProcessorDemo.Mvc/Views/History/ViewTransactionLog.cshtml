@@ -1,0 +1,111 @@
+﻿@model DataProcessorDemo.Models.ViewModels.TransactionLogViewModel
+
+@{ ViewBag.Title = "History"; }
+
+@if (Model == null)
+{
+    <section class="row">
+        <div class="col-lg-12">
+            <article>
+                <p>
+                    <strong>Invalid file ID or no data found. Please try again</strong>
+                </p>
+            </article>
+        </div>
+    </section>
+}
+else
+{
+    <section class="row">
+        <div class="col-lg-12">
+            <article>
+                <p>File name: <strong>@Model.FileName</strong></p>
+                <p>Number of lines processed: <strong>@Model.ProcessedLineCount</strong></p>
+            </article>
+        </div>
+    </section>
+
+    <section class="row" style="margin-top: 20px; margin-bottom: 20px;">
+        <div class="col-lg-12">
+            <article class="table-responsive">
+                <header>
+                    <p><strong>Processed data</strong></p>
+                </header>
+                <table id="taxDetails" class="display">
+                    <thead>
+                        <tr>
+                            <th>Account</th>
+                            <th>Description</th>
+                            <th>Currency Code</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if ((Model.ProcessedTaxDetails != null) && Model.ProcessedTaxDetails.Any())
+                        {
+                            for (int i = 0; i < 1000; i++)
+                            {
+                                <tr>
+                                    <td>@Model.ProcessedTaxDetails[i].Account</td>
+                                    <td>@Model.ProcessedTaxDetails[i].Description</td>
+                                    <td>@Model.ProcessedTaxDetails[i].CurrencyCode</td>
+                                    <td>@Model.ProcessedTaxDetails[i].Amount</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4">No data found</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </article>
+        </div>
+    </section>
+
+    <section class="row">
+        <div class="col-lg-12">
+            <article class="table-responsive">
+                <header>
+                    <p><strong>Unprocessed data</strong></p>
+                </header>
+                <table id="unprocessedDetails" class="display">
+                    <thead>
+                        <tr>
+                            <th>Line Data</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if ((Model.UnprocessedDetails != null) && Model.UnprocessedDetails.Any())
+                        {
+                            for (int i = 0; i < 1000; i++)
+                            {
+                                <tr>
+                                    <td>@Model.UnprocessedDetails[i].LineData</td>                                    
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>No data found</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </article>
+        </div>
+    </section>
+}
+
+@section pageScripts {
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#taxDetails").DataTable();
+            $("#unprocessedDetails").DataTable();
+        });
+    </script>
+}
