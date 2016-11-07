@@ -102,13 +102,9 @@ namespace DataProcessorDemo.Services
 
                 using (var streamReader = new StreamReader(new MemoryStream(inputStream)))
                 {
-                    var headerLine = streamReader.ReadLine();
-
-                    const string insertIntoTaxDetails = "Insert Into dbo.TaxDetails (FileId, Account, Description, CurrencyCodeId, Amount) Values ";
-                    const string insertIntoUnprocessedDetails = "Insert Into dbo.UnprocessedDetails (FileId, LineData) Values ";
-
-                    var processedSql = new StringBuilder();
-                    var unProcessedSql = new StringBuilder();
+                    var headerLine = streamReader.ReadLine();                    
+                    var processedValues = new StringBuilder();
+                    var unProcessedValues = new StringBuilder();
                     var parsedCount = 1;
                     var unProcessedCount = 0;
 
@@ -119,11 +115,11 @@ namespace DataProcessorDemo.Services
 
                         if (lineItems.Count() != 4)
                         {
-                            unProcessedSql.Append("('");
-                            unProcessedSql.Append(fileId.ToString());
-                            unProcessedSql.Append("', '");
-                            unProcessedSql.Append(currentLine);
-                            unProcessedSql.Append("'),");
+                            unProcessedValues.Append("('");
+                            unProcessedValues.Append(fileId.ToString());
+                            unProcessedValues.Append("', '");
+                            unProcessedValues.Append(currentLine);
+                            unProcessedValues.Append("'),");
 
                             unProcessedCount++;
                         }
@@ -137,27 +133,27 @@ namespace DataProcessorDemo.Services
                                 _currencyCodeValidator.IsValidCurrencyCode(lineItems[2]) &&
                                 validAmount)
                             {                                
-                                processedSql.Append("('");
-                                processedSql.Append(fileId.ToString());
-                                processedSql.Append("', '");
-                                processedSql.Append(lineItems[0]); // Account
-                                processedSql.Append("', '");
-                                processedSql.Append(lineItems[1]); // Description
-                                processedSql.Append("', '");
-                                processedSql.Append(_currencyCodeValidator.ToCurrencyCodeEnumValue(lineItems[2]));
-                                processedSql.Append("', '");
-                                processedSql.Append(amount);
-                                processedSql.Append("'),");
+                                processedValues.Append("('");
+                                processedValues.Append(fileId.ToString());
+                                processedValues.Append("', '");
+                                processedValues.Append(lineItems[0]); // Account
+                                processedValues.Append("', '");
+                                processedValues.Append(lineItems[1]); // Description
+                                processedValues.Append("', '");
+                                processedValues.Append(_currencyCodeValidator.ToCurrencyCodeEnumValue(lineItems[2]));
+                                processedValues.Append("', '");
+                                processedValues.Append(amount);
+                                processedValues.Append("'),");
 
                                 processedCount++;
                             }
                             else
                             {
-                                unProcessedSql.Append("('");
-                                unProcessedSql.Append(fileId.ToString());
-                                unProcessedSql.Append("', '");
-                                unProcessedSql.Append(currentLine);
-                                unProcessedSql.Append("'),");
+                                unProcessedValues.Append("('");
+                                unProcessedValues.Append(fileId.ToString());
+                                unProcessedValues.Append("', '");
+                                unProcessedValues.Append(currentLine);
+                                unProcessedValues.Append("'),");
 
                                 unProcessedCount++;
                             }
@@ -167,31 +163,27 @@ namespace DataProcessorDemo.Services
 
                         if ((processedCount > 0) && (processedCount % 100 == 0))
                         {
-                            await _taxDetailRepo.AddTaxDetailAsync(
-                                insertIntoTaxDetails + processedSql.ToString().TrimEnd(','));
+                            await _taxDetailRepo.AddTaxDetailAsync(processedValues.ToString().TrimEnd(','));
 
-                            processedSql.Clear();
+                            processedValues.Clear();
                         }
 
                         if ((unProcessedCount > 0) && (unProcessedCount % 100 == 0))
                         {
-                            await _unprocessedDetailRepo.AddUnprocessedDetailAsync(
-                                insertIntoUnprocessedDetails + unProcessedSql.ToString().TrimEnd(','));
+                            await _unprocessedDetailRepo.AddUnprocessedDetailAsync(unProcessedValues.ToString().TrimEnd(','));
 
-                            unProcessedSql.Clear();
+                            unProcessedValues.Clear();
                         }                        
                     }
                                         
-                    if (processedSql.Length > 0)
+                    if (processedValues.Length > 0)
                     {
-                        await _taxDetailRepo.AddTaxDetailAsync(
-                            insertIntoTaxDetails + processedSql.ToString().TrimEnd(','));
+                        await _taxDetailRepo.AddTaxDetailAsync(processedValues.ToString().TrimEnd(','));
                     }
 
-                    if (unProcessedSql.Length > 0)
+                    if (unProcessedValues.Length > 0)
                     {
-                        await _unprocessedDetailRepo.AddUnprocessedDetailAsync(
-                            insertIntoUnprocessedDetails + unProcessedSql.ToString().TrimEnd(','));
+                        await _unprocessedDetailRepo.AddUnprocessedDetailAsync(unProcessedValues.ToString().TrimEnd(','));
                     }
                 }
 

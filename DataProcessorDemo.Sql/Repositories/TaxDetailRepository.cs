@@ -39,11 +39,18 @@ namespace DataProcessorDemo.Sql.Repositories
             this._logger = logger;
         }
 
-        public async Task AddTaxDetailAsync(string insertTaxDetailSql)
+        public async Task AddTaxDetailAsync(string taxDetailValues)
         {
             try
             {
-                await taxDbContext.Database.ExecuteSqlCommandAsync(insertTaxDetailSql);
+                await taxDbContext.Database.ExecuteSqlCommandAsync(
+                    "Insert Into dbo.TaxDetails (FileId, Account, Description, CurrencyCodeId, Amount) Values " + taxDetailValues);
+
+                await taxDbContext.SaveChangesAsync();
+
+                taxDbContext.Dispose();
+                taxDbContext = new TaxEntities();
+                taxDbContext.Configuration.AutoDetectChangesEnabled = false;                
             }
             catch (Exception ex)
             {

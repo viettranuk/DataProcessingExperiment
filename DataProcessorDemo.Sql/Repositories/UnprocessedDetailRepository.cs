@@ -39,18 +39,25 @@ namespace DataProcessorDemo.Sql.Repositories
             this._logger = logger;
         }
 
-        public async Task AddUnprocessedDetailAsync(string insertUnprocessedDetailSql)
+        public async Task AddUnprocessedDetailAsync(string unprocessedValues)
         {
             try
             {
-                await taxDbContext.Database.ExecuteSqlCommandAsync(insertUnprocessedDetailSql);
+                await taxDbContext.Database.ExecuteSqlCommandAsync(
+                    "Insert Into dbo.UnprocessedDetails (FileId, LineData) Values " + unprocessedValues);
+
+                await taxDbContext.SaveChangesAsync();
+
+                taxDbContext.Dispose();
+                taxDbContext = new TaxEntities();
+                taxDbContext.Configuration.AutoDetectChangesEnabled = false;
             }
             catch (Exception ex)
             {
                 _logger.LogException(ex);
             }
         }
-
+        
         public List<UnprocessedDetailDto> GetUnprocessedDetailsByFileId(int fileId)
         {
             try
