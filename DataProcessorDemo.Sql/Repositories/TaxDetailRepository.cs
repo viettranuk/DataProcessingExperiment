@@ -43,6 +43,8 @@ namespace DataProcessorDemo.Sql.Repositories
         {
             try
             {
+                taxDbContext.Configuration.AutoDetectChangesEnabled = false;
+
                 await taxDbContext.Database.ExecuteSqlCommandAsync(
                     "Insert Into dbo.TaxDetails (FileId, Account, Description, CurrencyCodeId, Amount) Values " + taxDetailValues);
 
