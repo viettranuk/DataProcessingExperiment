@@ -27,4 +27,13 @@ The application does the following:
 - Allow the user to see all the transaction data in the system
 - Allow user to remove or edit the transaction data (not currently supported)
 
-The application adhered to best practices where appropriate such as SOLID principles.
+The application adhered to best practices where possible (i.e. SOLID principles, etc.) but as usual, there is always room for improvement! All feedback are welcomed and very much appreciated!
+
+Technical notes:
+- SQL Server 2008 R2
+- Visual Studio 2013
+- MVC 5
+- .Net 4.6.1
+- EF 6 (database first)
+
+Tags: #solid, #autofac, #dependencyInjection, #cSharp, #software, #kpmg, #webApp, #ef, #database, #mvc, #sqlServer, #sql
