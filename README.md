@@ -2,7 +2,7 @@
 
 This is a small web application that processes account transaction data to calculate tax figures for a client tax return. The focus is on the data input/manipulation stage of the process which is achieved through an upload feature. 
 
-The transaction data has 4 columns: 
+The transaction data has 4 columns
 
 - Account (text)
 - Description (text)
@@ -11,7 +11,7 @@ The transaction data has 4 columns:
 
 and could be attached to a database with >1mil rows. The format of the data will be in Excel (.xlsx) or CSV and each individual file could contain up to 100k rows.
 
-The application does the following:
+The application does the following
 
 - Allow the user to select a file and show the current file name (only CSV supported at this stage)
 - Allow the user to upload the content of the current file to a table in a SQL database
@@ -29,7 +29,7 @@ The application does the following:
 
 The application adhered to best practices where possible (i.e. SOLID principles, etc.) but as usual, there is always room for improvement! All feedback are welcomed and very much appreciated!
 
-Technical notes:
+Technical notes
 - SQL Server 2008 R2
 - Visual Studio 2013
 - MVC 5
