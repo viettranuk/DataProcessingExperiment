@@ -36,4 +36,4 @@ Technical notes
 - .Net 4.6.1
 - EF 6 (database first)
 
-Tags: #solid, #autofac, #dependencyInjection, #cSharp, #software, #kpmg, #webApp, #ef, #database, #mvc, #sqlServer, #sql
+Tags: #solid, #autofac, #dependencyInjection, #cSharp, #software, #webApp, #ef, #database, #mvc, #sqlServer, #sql
