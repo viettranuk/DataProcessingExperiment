@@ -1,4 +1,4 @@
-# Data Processor
+# Data Processing Experiment
 
 This is a small web application that processes account transaction data to calculate tax figures for a client tax return. The focus is on the data input/manipulation stage of the process which is achieved through an upload feature. 
 
