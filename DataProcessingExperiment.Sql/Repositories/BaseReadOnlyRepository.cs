@@ -10,7 +10,8 @@ using DataProcessingExperiment.Services.Interfaces.IRepositories;
 
 namespace DataProcessingExperiment.Sql.Repositories
 {
-    public partial class BaseReadOnlyRepository<TContext> : IBaseReadOnlyRepository where TContext : DbContext
+    public partial class BaseReadOnlyRepository<TContext> : IBaseReadOnlyRepository 
+        where TContext : DbContext
     {
         protected readonly TContext _context;
         private readonly ILogging _logger;

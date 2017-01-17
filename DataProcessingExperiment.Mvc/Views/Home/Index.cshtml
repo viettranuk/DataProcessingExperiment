@@ -4,19 +4,57 @@
 
 <section class="row">
     <div class="col-lg-12">
+        <article id="introductionText">
+            <header>
+                <strong>INTRODUCTION</strong>
+            </header>
+            <hr />
+            <p>
+                This is a small web application that processes account transaction data to
+                calculate tax figures for a client tax return. The focus is on the data input/manipulation stage
+                of the process which is achieved through an upload feature.
+            </p>
+            <p>The transaction data has 4 columns</p>
+            <ul>
+                <li>Account (text)</li>
+                <li>Description (text)</li>
+                <li>Currency Code (string)</li>
+                <li>Amount (decimal)</li>
+            </ul>
+            <p>
+                and could be attached to a database with >1mil rows. The format of the data will be in Excel (.xlsx)
+                or CSV and each individual file could contain up to 100k rows.
+            </p>
+            <p>The application does the following</p>
+            <ul style="padding-bottom: 10px;">
+                <li>Allow the user to select a file and show the current file name (only CSV supported at this stage)</li>
+                <li>Allow the user to upload the content of the current file to a table in a SQL database</li>
+                <li>Each line of data is validated before it is uploaded</li>
+                <li style="list-style: none;">
+                    <ul>
+                        <li>All fields are required</li>
+                        <li>Currency Code must be a valid ISO 4217 currency code</li>
+                        <li>Amount must be a valid number</li>
+                    </ul>
+                </li>
+                <li>On completion, the number of lines imported and the details of any lines ignored due to failed validation will be shown</li>
+                <li>Allow the user to see all the transaction data in the system</li>
+                <li>Allow user to remove or edit the transaction data (not currently supported)</li>
+            </ul>
+        </article>
+    </div>
+</section>
+
+<section class="row">
+    <div class="col-lg-12">
         <article id="uploadForm">
             <form action="@Url.Action("Upload", "Home")" method="POST" class="form-horizontal" enctype="multipart/form-data">
-
                 @Html.AntiForgeryToken()
-
                 <header>
                     <strong>UPLOAD FILE</strong>
                 </header>
-
                 <hr />
-
                 <p id="uploadResult" class="text-danger"></p>
-
                 <div class="form-group file-input">
                     <div class="col-md-2">
                         <span class="btn btn-success fileinput-button">
@@ -28,7 +66,6 @@
                         <textarea id="allFileNames" name="FileName" class="form-control file-name" rows="4" readonly></textarea>
                     </div>
                 </div>
-
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <span id="progressIndicator">
@@ -38,7 +75,6 @@
                         <input id="fileUpload" type="button" value="Upload" class="btn btn-primary" />
                     </div>
                 </div>
-
             </form>
         </article>
     </div>

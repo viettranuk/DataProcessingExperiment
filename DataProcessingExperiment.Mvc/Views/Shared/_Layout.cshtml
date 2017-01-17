@@ -6,41 +6,46 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Data Processor</title>
+    <title>@ViewBag.Title - Data Processing Experiments</title>
     @Styles.Render("~/Content/css")
 </head>
 
 <body>
 
-    <nav class="navbar navbar-inverse navbar-static-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Data Processor", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul id="allMenuItems" class="nav navbar-nav">
-                    <li id="uploadMenuItem" class="nav-item active">
-                        <a id="uploadMenuLink" class="nav-link" href="@Url.Action("Index", "Home")">Upload</a>
-                    </li>
-                    <li id="historyMenuItem" class="nav-item">
-                        <a id="historyMenuLink" class="nav-link" href="@Url.Action("Index", "History")">History</a>
-                    </li>
-                </ul>
+    <section id="header">
+        <div class="navbar navbar-inverse navbar-static-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Menu</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="@Url.Action("Index", "Home")" class="navbar-brand">
+                        <sub>Data Processing</sub><br /><b>E x p e r i m e n t s</b>
+                    </a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul id="allMenuItems" class="nav navbar-nav navbar-right nav-right-links">
+                        <li id="uploadMenuItem" class="nav-item active">
+                            <a id="uploadMenuLink" class="nav-link" href="@Url.Action("Index", "Home")">Upload</a>
+                        </li>
+                        <li id="historyMenuItem" class="nav-item">
+                            <a id="historyMenuLink" class="nav-link" href="@Url.Action("Index", "History")">History</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
-    </nav>
-
+    </section>
+    
     <section class="container body-content">
         @RenderBody()
         <hr />
         <section>
             <footer>
-                <p>&copy; @DateTime.Now.Year - Data Processor</p>
+                <p>&copy; @DateTime.Now.Year - Data Processing Experiments</p>
             </footer>
         </section>
     </section>
@@ -60,6 +65,7 @@
     </script>
 
     @Scripts.Render("~/bundles/website")
+
     @RenderSection("pageScripts", required: false)
 
 </body>

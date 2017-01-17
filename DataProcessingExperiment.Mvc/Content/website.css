@@ -2,6 +2,38 @@
     resize: none;
 }
 
+    input:focus,
+    select:focus,
+    textarea:focus,
+    button:focus {
+        outline: none !important;
+    }
+
+.navbar-brand {
+    height: auto;
+}
+
+.navbar-inverse .navbar-brand {
+    color: #fff;
+}
+
+    .navbar-inverse .navbar-brand:hover,
+    .navbar-inverse .navbar-brand:focus {
+        color: #9d9d9d;
+        background-color: transparent;
+    }
+
+.navbar-inverse .navbar-nav > .active > a,
+.navbar-inverse .navbar-nav > .active > a:focus,
+.navbar-inverse .navbar-nav > .active > a:hover {
+    border-radius: 6px;
+}
+
+.nav-right-links {
+    margin-top: 14px;
+    margin-bottom: 14px;
+}
+
 .file-name {
     max-width: 560px;
 }
@@ -23,11 +55,20 @@
         cursor: pointer;
     }
 
-/* Fixes for IE < 8 */
+/* Style rules defined in the following block will only be applied in IE < 8, other browsers will ignore them. */
+
 @media screen\9 {
+
     .fileinput-button input {
         filter: alpha(opacity=0);
         font-size: 100%;
         height: 100%;
+    }
+}
+
+@media (min-width: 768px) {
+
+    .navbar-right {
+        margin-right: 0;
     }
 }

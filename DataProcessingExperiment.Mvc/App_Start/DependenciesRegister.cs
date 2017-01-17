@@ -29,14 +29,12 @@ namespace DataProcessingExperiment.Mvc.App_Start
 
             autofacBuilder.RegisterType<BasicLogging>().As<ILogging>();
             autofacBuilder.RegisterType<CurrencyHelpers>().As<ICurrencyHelpers>();
-            autofacBuilder.RegisterType<TaxEntities>().AsImplementedInterfaces().InstancePerRequest(); // Try InstancePerLifetimeScope() here to see if performance get better??
-            autofacBuilder.RegisterType<BaseRepository<TaxEntities>>().As<IBaseRepository>();
 
-            autofacBuilder.Register(c => new DataProcessingServices(
-                c.Resolve<IBaseRepository>(),
-                c.Resolve<ICurrencyHelpers>(),
-                c.Resolve<ILogging>()))
-            .As<IDataProcessingServices>();
+            // Try InstancePerLifetimeScope() here to see if performance gets better??
+            autofacBuilder.RegisterType<TaxEntities>().AsSelf().InstancePerRequest();
+            
+            autofacBuilder.RegisterType<BaseRepository<TaxEntities>>().As<IBaseRepository>();
+            autofacBuilder.RegisterType<DataProcessingServices>().As<IDataProcessingServices>();
             
             autofacBuilder.RegisterFilterProvider();
 
