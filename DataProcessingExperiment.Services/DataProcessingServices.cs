@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -64,10 +65,11 @@ namespace DataProcessingExperiment.Services
             }            
         }
 
-        private async Task<int> ProcessFileDataAsync(int fileId, byte[] inputStream)
+        private int ProcessFileData(int fileId, byte[] inputStream)
         {
             try
             {
+                var watch = Stopwatch.StartNew();                
                 var processedCount = 0;
 
                 using (var streamReader = new StreamReader(new MemoryStream(inputStream)))
@@ -133,14 +135,14 @@ namespace DataProcessingExperiment.Services
 
                         if ((processedCount > 0) && (processedCount % 100 == 0))
                         {
-                            await _baseRepo.AddTaxDetailAsync(processedValues.ToString().TrimEnd(','));
+                            _baseRepo.AddTaxDetail(processedValues.ToString().TrimEnd(','));
 
                             processedValues.Clear();
                         }
 
                         if ((unProcessedCount > 0) && (unProcessedCount % 100 == 0))
                         {
-                            await _baseRepo.AddUnprocessedDetailAsync(unProcessedValues.ToString().TrimEnd(','));
+                            _baseRepo.AddUnprocessedDetail(unProcessedValues.ToString().TrimEnd(','));
 
                             unProcessedValues.Clear();
                         }                        
@@ -148,14 +150,18 @@ namespace DataProcessingExperiment.Services
                                         
                     if (processedValues.Length > 0)
                     {
-                        await _baseRepo.AddTaxDetailAsync(processedValues.ToString().TrimEnd(','));
+                        _baseRepo.AddTaxDetail(processedValues.ToString().TrimEnd(','));
                     }
 
                     if (unProcessedValues.Length > 0)
                     {
-                        await _baseRepo.AddUnprocessedDetailAsync(unProcessedValues.ToString().TrimEnd(','));
+                        _baseRepo.AddUnprocessedDetail(unProcessedValues.ToString().TrimEnd(','));
                     }
                 }
+
+                watch.Stop();
+                
+                _logger.LogProcessingTime("ProcessFileDataAsync", watch.ElapsedMilliseconds, null);
 
                 return processedCount;
             }
@@ -178,11 +184,12 @@ namespace DataProcessingExperiment.Services
                     file.InputStream.CopyTo(memStream);
 
                     var payload = memStream.ToArray();
-                    var addFileDataTask = _baseRepo.AddFileDataAsync(fileId, payload);
-                    var processFileDataTask = ProcessFileDataAsync(fileId, payload);
                     
-                    await Task.WhenAll(addFileDataTask, processFileDataTask);
-                    await _baseRepo.UpdateProcessedLineCount(fileId, processFileDataTask.Result);
+                    await _baseRepo.AddFileDataAsync(fileId, payload);
+                    
+                    var processFileDataTask = ProcessFileData(fileId, payload);
+                    
+                    await _baseRepo.UpdateProcessedLineCountAsync(fileId, processFileDataTask);
                 }
             }
             catch (Exception ex)

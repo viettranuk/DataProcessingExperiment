@@ -75,7 +75,7 @@ namespace DataProcessingExperiment.Sql.Repositories
 
                 Create<UploadedFile>(file);
 
-                await _context.SaveChangesAsync();
+                await SaveAsync();
 
                 return file.FileId;
             }
@@ -86,7 +86,7 @@ namespace DataProcessingExperiment.Sql.Repositories
             }
         }
 
-        public async Task UpdateProcessedLineCount(int fileId, int processedLineCount)
+        public async Task UpdateProcessedLineCountAsync(int fileId, int processedLineCount)
         {
             try
             {
@@ -96,7 +96,7 @@ namespace DataProcessingExperiment.Sql.Repositories
 
                 Update<UploadedFile>(thisFile);
 
-                await _context.SaveChangesAsync();
+                await SaveAsync();
             }
             catch (Exception ex)
             {

@@ -6,7 +6,7 @@ namespace DataProcessingExperiment.Services.Interfaces.IRepositories
 {
     public interface IUnprocessedDetailRepository
     {
-        Task AddUnprocessedDetailAsync(string insertUnprocessedDetailSql);
+        void AddUnprocessedDetail(string insertUnprocessedDetailSql);
         List<UnprocessedDetailDto> GetUnprocessedDetailsByFileId(int fileId);
     }
 }

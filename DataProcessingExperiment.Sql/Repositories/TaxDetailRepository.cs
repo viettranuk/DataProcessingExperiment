@@ -35,21 +35,15 @@ namespace DataProcessingExperiment.Sql.Repositories
     public partial class BaseRepository<TContext> : BaseReadOnlyRepository<TContext>, IBaseRepository 
         where TContext : DbContext
     {
-        public async Task AddTaxDetailAsync(string taxDetailValues)
+        public void AddTaxDetail(string taxDetailValues)
         {
             try
             {
                 _context.Configuration.AutoDetectChangesEnabled = false;
 
-                await _context.Database.ExecuteSqlCommandAsync(
+                _context.Database.ExecuteSqlCommand(
                     "Insert Into dbo.TaxDetails (FileId, Account, Description, CurrencyCodeId, Amount) Values " + 
                     taxDetailValues);
-
-                await _context.SaveChangesAsync();
-
-                _context.Dispose();
-                //_context = new TaxEntities();
-                //_context.Configuration.AutoDetectChangesEnabled = false;
             }
             catch (Exception ex)
             {

@@ -38,5 +38,26 @@ namespace DataProcessingExperiment.Logging
                 );
             }
         }
+
+        public void LogProcessingTime(string methodName, long timeTakenInMilliseconds, string logFilePath)
+        {
+            // TODO: replace by Log4Net
+
+            if (string.IsNullOrWhiteSpace(logFilePath))
+            {
+                logFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DefaultProcessiongTimeLog.txt");
+            }
+
+            using (var writer = new StreamWriter(logFilePath, true))
+            {
+                writer.WriteLine(methodName + ": " + timeTakenInMilliseconds + " milliseconds");
+
+                writer.WriteLine(
+                    Environment.NewLine +
+                    "-----------------------------------------------------------------------------" +
+                    Environment.NewLine
+                );
+            }
+        }
     }
 }

@@ -11,7 +11,7 @@ namespace DataProcessingExperiment.Services.Interfaces.IRepositories
     {
         Task<int> AddFileDetailsAsync(UploadedFileDto uploadedFileDto);
         List<UploadedFileDto> GetAllUploadedFiles();
-        Task UpdateProcessedLineCount(int fileId, int processedLineCount);
+        Task UpdateProcessedLineCountAsync(int fileId, int processedLineCount);
         long GetProcessedLineCountForFile(int fileId);
         string GetFileNameById(int fileId);
     }

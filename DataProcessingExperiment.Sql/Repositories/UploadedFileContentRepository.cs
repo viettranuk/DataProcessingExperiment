@@ -25,7 +25,7 @@ namespace DataProcessingExperiment.Sql.Repositories
 
                 Create<UploadedFilesContent>(fileData);
 
-                await _context.SaveChangesAsync();
+                await SaveAsync();
             }
             catch (Exception ex)
             {

@@ -35,20 +35,14 @@ namespace DataProcessingExperiment.Sql.Repositories
     public partial class BaseRepository<TContext> : BaseReadOnlyRepository<TContext>, IBaseRepository 
         where TContext : DbContext
     {
-        public async Task AddUnprocessedDetailAsync(string unprocessedValues)
+        public void AddUnprocessedDetail(string unprocessedValues)
         {
             try
             {
                 _context.Configuration.AutoDetectChangesEnabled = false;
 
-                await _context.Database.ExecuteSqlCommandAsync(
+                _context.Database.ExecuteSqlCommand(
                     "Insert Into dbo.UnprocessedDetails (FileId, LineData) Values " + unprocessedValues);
-
-                await _context.SaveChangesAsync();
-
-                _context.Dispose();
-                //context = new TContext();
-                //context.Configuration.AutoDetectChangesEnabled = false;
             }
             catch (Exception ex)
             {
