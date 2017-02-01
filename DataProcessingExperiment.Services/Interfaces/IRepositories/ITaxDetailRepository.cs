@@ -9,7 +9,8 @@ namespace DataProcessingExperiment.Services.Interfaces.IRepositories
 {
     public interface ITaxDetailRepository
     {
-        void AddTaxDetail(string insertTaxDetailSql);
+        //void AddTaxDetail(string insertTaxDetailSql);
+        Task AddTaxDetailAsync(string insertTaxDetailSql);
         List<TaxDetailDto> GetProcessedTaxDetailsByFileId(int fileId);
     }
 }

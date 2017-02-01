@@ -35,7 +35,7 @@ namespace DataProcessingExperiment.Sql.Repositories
     public partial class BaseRepository<TContext> : BaseReadOnlyRepository<TContext>, IBaseRepository 
         where TContext : DbContext
     {
-        public void AddUnprocessedDetail(string unprocessedValues)
+        public async Task AddUnprocessedDetailAsync(string unprocessedValues)
         {
             try
             {
@@ -43,6 +43,8 @@ namespace DataProcessingExperiment.Sql.Repositories
 
                 _context.Database.ExecuteSqlCommand(
                     "Insert Into dbo.UnprocessedDetails (FileId, LineData) Values " + unprocessedValues);
+
+                await SaveAsync();
             }
             catch (Exception ex)
             {

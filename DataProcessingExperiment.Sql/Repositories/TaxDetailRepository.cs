@@ -35,7 +35,7 @@ namespace DataProcessingExperiment.Sql.Repositories
     public partial class BaseRepository<TContext> : BaseReadOnlyRepository<TContext>, IBaseRepository 
         where TContext : DbContext
     {
-        public void AddTaxDetail(string taxDetailValues)
+        public async Task AddTaxDetailAsync(string taxDetailValues)
         {
             try
             {
@@ -44,6 +44,8 @@ namespace DataProcessingExperiment.Sql.Repositories
                 _context.Database.ExecuteSqlCommand(
                     "Insert Into dbo.TaxDetails (FileId, Account, Description, CurrencyCodeId, Amount) Values " + 
                     taxDetailValues);
+
+                await SaveAsync();
             }
             catch (Exception ex)
             {
