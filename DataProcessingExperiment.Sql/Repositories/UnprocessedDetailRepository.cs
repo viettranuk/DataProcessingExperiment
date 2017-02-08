@@ -17,10 +17,8 @@ namespace DataProcessingExperiment.Sql.Repositories
         {
             try
             {
-                var allUnprocessedDetails =
-                    GetQueryable<UnprocessedDetail>(f => f.FileId == fileId)
-                        .Select(f => f.ToUnprocessedDetailDto())
-                        .ToList();
+                var rawAllUnprocessedDetails = GetQueryable<UnprocessedDetail>(f => f.FileId == fileId).AsEnumerable();
+                var allUnprocessedDetails = rawAllUnprocessedDetails.Select(f => f.ToUnprocessedDetailDto()).ToList();
 
                 return allUnprocessedDetails;
             }

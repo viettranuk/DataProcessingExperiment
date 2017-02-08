@@ -65,7 +65,6 @@ namespace DataProcessingExperiment.Services
             }            
         }
 
-        //private int ProcessFileData(int fileId, byte[] inputStream)
         private async Task<int> ProcessFileDataAsync(int fileId, byte[] inputStream)
         {
             try
@@ -225,7 +224,7 @@ namespace DataProcessingExperiment.Services
                 {
                     FileName = _baseRepo.GetFileNameById(fileId),
                     ProcessedLineCount = _baseRepo.GetProcessedLineCountForFile(fileId),
-                    ProcessedTaxDetails = _baseRepo.GetProcessedTaxDetailsByFileId(fileId),
+                    ProcessedTaxDetails = null, //_baseRepo.GetProcessedTaxDetailsByFileId(fileId),
                     UnprocessedDetails = _baseRepo.GetUnprocessedDetailsByFileId(fileId)
                 };
 

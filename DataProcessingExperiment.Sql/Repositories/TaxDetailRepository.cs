@@ -17,10 +17,8 @@ namespace DataProcessingExperiment.Sql.Repositories
         {
             try
             {
-                var allTaxDetails = 
-                    GetQueryable<TaxDetail>(f => f.FileId == fileId)
-                        .Select(f => f.ToTaxDetailDto())
-                        .ToList();
+                var rawAllTaxDetails = GetQueryable<TaxDetail>(f => f.FileId == fileId).AsEnumerable();
+                var allTaxDetails = rawAllTaxDetails.Select(f => f.ToTaxDetailDto()).ToList();
 
                 return allTaxDetails;
             }
