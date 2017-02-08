@@ -36,10 +36,7 @@ Technical notes
 - .Net 4.6.1
 - EF 6 (database first)
 
-- Please restore database from the backup copy provided (Tax.bak)
-
-- After restoring, please update connection strings in web.config/app.config to 
-  point to the correct location. There are 2 locations as follows:
+Please restore database from the backup copy provided (Tax.bak). After restoring, please update connection strings in web.config/app.config to point to the correct location. There are 2 locations as follows:
 
 	\DataProcessingExperiment\DataProcessingExperiment.Mvc\Web.config
 	\DataProcessingExperiment\DataProcessingExperiment.Sql\App.config
