@@ -42,3 +42,8 @@ Please restore database from the backup copy provided (Tax.bak). After restoring
 	\DataProcessingExperiment\DataProcessingExperiment.Sql\App.config
   
 Tags: #solid, #autofac, #dependencyInjection, #cSharp, #software, #webApp, #ef, #database, #mvc, #sqlServer, #sql
+
+*TODO*  
+  
+Refactor to use Options pattern:  
+https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/options  
